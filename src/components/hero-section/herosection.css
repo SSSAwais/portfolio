@@ -1,0 +1,25 @@
+/* .herosection-wrapper {
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    url("/images/code.jpg") center center no-repeat;
+  background-size: cover;
+} */
+.herosection-wrapper {
+  position: relative; /* Required for positioning the pseudo-element */
+  background: url("/images/code.jpg") center center no-repeat;
+  background-size: cover;
+  overflow: hidden; /* Ensures the overlay stays contained */
+}
+
+.herosection-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0; /* Covers the entire area of the parent */
+  background: rgba(0, 0, 0, 0.7); /* Black overlay with 50% opacity */
+  z-index: 3; /* Ensures it appears above the background but below the content */
+}
+
+/* Content inside herosection-wrapper */
+.herosection-wrapper > * {
+  position: relative; /* Ensures content is above the overlay */
+  z-index: 6;
+}
