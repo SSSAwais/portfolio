@@ -3,15 +3,17 @@ import MyServices from "./my-services/my-services";
 import MyPortfolio from "./my-portfolio/my-porfolio";
 import MyContact from "./my-contact/my-contact";
 import HireMe from "./hire-me/hire-me";
+import AboutMe from "./about-me/about-me";
 
 export default function Home() {
   return (
-    <div className="">
+    <>
       <HeroSection />
       <MyServices />
       <MyPortfolio />
+      <AboutMe />
       <MyContact />
       <HireMe />
-    </div>
+    </>
   );
 }
