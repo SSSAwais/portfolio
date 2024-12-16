@@ -10,7 +10,8 @@ import { IoClose } from "react-icons/io5";
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [navlist, setNavList] = useState([
+  const [activeSection, setActiveSection] = useState(""); // State to track active section
+  const [navlist] = useState([
     { name: "Home", link: "#herosection" },
     { name: "Services", link: "#myservices" },
     { name: "Portfolio", link: "#portfolio" },
@@ -30,6 +31,33 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const sectionElements = navlist.map((item) =>
+      document.querySelector(item.link)
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id); // Update active section
+          }
+        });
+      },
+      { threshold: 0.6 } // Adjust for when the section is considered "active"
+    );
+
+    sectionElements.forEach((section) => {
+      if (section) observer.observe(section);
+    });
+
+    return () => {
+      sectionElements.forEach((section) => {
+        if (section) observer.unobserve(section);
+      });
+    };
+  }, [navlist]);
 
   const handleSmoothScroll = (e, link) => {
     e.preventDefault();
@@ -73,7 +101,11 @@ const Header = () => {
                   <a
                     href={e.link}
                     onClick={(event) => handleSmoothScroll(event, e.link)}
-                    className="font-open-sans font-medium leading-[14px] text-[14px] p-[10px] text-[#fff] hover:text-[#9c9ead] transition-colors duration-300"
+                    className={`font-open-sans font-medium leading-[14px] text-[14px] p-[10px] transition-colors duration-300 ${
+                      activeSection === e.link.replace("#", "")
+                        ? "font-bold text-white"
+                        : "text-[#fff] hover:text-[#9c9ead]"
+                    }`}
                   >
                     {e.name}
                   </a>
@@ -120,7 +152,11 @@ const Header = () => {
               key={idx}
               href={e.link}
               onClick={(event) => handleSmoothScroll(event, e.link)}
-              className="font-open-sans font-medium text-[16px] text-white py-4 hover:text-[#9c9ead] transition-colors duration-300"
+              className={`font-open-sans  text-[16px] py-4 transition-colors duration-300 ${
+                activeSection === e.link.replace("#", "")
+                  ? "font-bold text-white"
+                  : "text-white font-normal hover:text-[#9c9ead]"
+              }`}
             >
               {e.name}
             </a>
